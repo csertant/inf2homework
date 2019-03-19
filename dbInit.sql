@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `scalp`.`People` (
   `name` NVARCHAR(30) NOT NULL,
   `address` NVARCHAR(100) NOT NULL,
   `email` VARCHAR(30) NOT NULL,
-  `workplace` INT NOT NULL,
+  `workplace` INT,
   PRIMARY KEY (`id`),
   INDEX `fk_People_Company1_idx` (`workplace` ASC) VISIBLE,
   CONSTRAINT `fk_People_Company1`
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `scalp`.`Company` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` NVARCHAR(50) NOT NULL,
   `address` NVARCHAR(100) NULL,
-  `ceo` INT NOT NULL,
+  `ceo` INT,
   PRIMARY KEY (`id`),
   INDEX `fk_Company_People_idx` (`ceo` ASC) VISIBLE,
   CONSTRAINT `fk_Company_People`
