@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Scalp - Startup project management</title>
+        <title>Scalp - About us</title>
         <link rel="stylesheet" href="styles.css" />
         <link rel="icon" href="pics/favicon.png" />
         <meta charset="utf-8" />
@@ -10,10 +10,11 @@
 
         <?php include 'menu.html'; ?>
 
-        <div class="main-content">
-            <header class="title main-title">
-                <h1>Scalp: Manage your startup projects</h1>
+        <div class="about-content">
+            <header class="title">
+                <h1>About us</h1>
             </header>
+            <p>Icons from <a href="https://material.io/tools/icons">Google</a>.</p>
         </div>
 
         <?php include 'footer.html'; ?>

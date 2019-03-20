@@ -4,19 +4,46 @@ include 'scalp_db.php';
 $connection = connectDatabase();
 
 $addedNewPerson = false;
+$updatedPerson = false;
+$deletedPerson = false;
 if (isset($_POST['new'])) {
     $name = mysqli_real_escape_string($connection, $_POST['name']);
     $address = mysqli_real_escape_string($connection, $_POST['address']);
     $email = mysqli_real_escape_string($connection, $_POST['email']);
-    $workplace = mysqli_real_escape_string($connection, $_POST['workplace']);
-    $createQuery = sprintf("INSERT INTO People(name, address, email, workplace) VALUES ('%s', '%s', '%s', '%s')",
+    $cellphone = mysqli_real_escape_string($connection, $_POST['cellphone']);
+    $createQuery = sprintf("INSERT INTO People(name, address, email, cellphone) VALUES ('%s', '%s', '%s', '%s')",
         $name,
         $address,
         $email,
-        $workplace
+        $cellphone
     );
     mysqli_query($connection, $createQuery) or die(mysqli_error($connection));
     $addedNewPerson = true;
+}
+else if(isset($_POST['update'])) {
+    $uid = mysqli_real_escape_string($connection, $_POST['id']);
+    $uname = mysqli_real_escape_string($connection, $_POST['name']);
+    $uaddress = mysqli_real_escape_string($connection, $_POST['address']);
+    $uemail = mysqli_real_escape_string($connection, $_POST['email']);
+    $ucellphone = mysqli_real_escape_string($connection, $_POST['cellphone']);
+    $updateQuery = sprintf("UPDATE People SET name='%s', address='%s', email='%s', cellphone='%s' WHERE id='%s'",
+        $uname,
+        $uaddress,
+        $uemail,
+        $ucellphone,
+        $uid
+    );
+    mysqli_query($connection, $updateQuery) or die(mysqli_error($connection));
+    $updatedPerson = true;
+}
+else if(isset($_POST['delete'])) {
+    $deleteQueryMxdProjects = sprintf("DELETE FROM ProjectsContributors WHERE People_id='%s'", 
+    mysqli_real_escape_string($connection, $_POST['id']));
+    $deleteQueryPeople = sprintf("DELETE FROM People WHERE id='%s'", 
+    mysqli_real_escape_string($connection, $_POST['id']));
+    mysqli_query($connection, $deleteQueryMxdProjects) or die(mysqli_error($connection));
+    mysqli_query($connection, $deleteQueryPeople) or die(mysqli_error($connection));
+    $deletedPerson = true;
 }
 ?>
 
@@ -37,29 +64,38 @@ if (isset($_POST['new'])) {
             </header>
             <div>
                 <?php
-                    $querySelect = "SELECT id, name, address, email, workplace FROM People ORDER BY name";
+                    if(isset($_GET['personid'])){
+                        $querySelect = sprintf("SELECT id, name, address, email, cellphone FROM People WHERE id='%s'",
+                        mysqli_real_escape_string($connection, $_GET['personid']));
+                    }
+                    else {
+                        $querySelect = "SELECT id, name, address, email, cellphone FROM People ORDER BY name";
+                    }
                     $result = mysqli_query($connection, $querySelect) or die(mysqli_error($connection));
                 ?>
-                <table class="">
-                <thead class="">
+                <table>
+                <thead>
                     <tr>
                         <th>Name</th>
                         <th>Address</th>      
                         <th>Email</th>      
-                        <th>Workplace</th>
+                        <th>Cellphone</th>
                         <th></th>
                     </tr> 
                 </thead>
                 <tbody>
+                <?php if(!mysqli_num_rows($result)): ?>
+                    <tr><td colspan="5">Table is empty/There is no such person.</td></tr>
+                <?php endif; ?>
                 <?php while ($row = mysqli_fetch_array($result)): ?>
                     <tr>
                         <td><?=$row['name']?></td>
                         <td><?=$row['address']?></td>
                         <td><?=$row['email']?></td>
-                        <td><?=$row['workplace']?></td>
+                        <td><?=$row['cellphone']?></td>
                         <td>
-                            <a class="" href="editPeople.php?personid=<?=$row['id']?>">
-                                <i class=""></i>
+                            <a class="" href="people.php?personid=<?=$row['id']?>">
+                                <i class="material-icons">edit</i>
                             </a>
                         </td> 
                     </tr>                
@@ -67,29 +103,63 @@ if (isset($_POST['new'])) {
                 </tbody>
                 </table>
 
+                <!-- Create New -->
+                <?php if(!isset($_GET['personid'])): ?>
                 <form method="post" action="">
                     <div class="form-container">
                         <h2>New person</h2>
                             <div class="form-field">
-                                <label for="name">Name</label>
+                                <label for="name">Name:</label>
                                 <input required class="form-control" name="name" id="name" type="text" />
                             </div>
                             <div class="form-field">
-                                <label for="address">Address</label>
+                                <label for="address">Address:</label>
                                 <input required class="form-control" name="address" id="address" type="text"  />
                             </div>
                             <div class="form-field">
-                                <label for="email">Email</label>
+                                <label for="email">Email:</label>
                                 <input required class="form-control" name="email" id="email" type="email" />
                             </div>
                             <div class="form-field">
-                                <label for="workplace">Workplace</label>
-                                <!-- Select existing firms-->
-                                
+                                <label for="cellphone">Cellphone:</label>
+                                <input required class="form-control" name="cellphone" id="cellphone" type="text"  />
                             </div>
                             <input class="form-submit" name="new" type="submit" value="Create" />
                     </div>
                 </form>
+                <?php endif; ?>
+
+                <!-- Modify, Delete -->
+                <?php if(isset($_GET['personid'])): ?>
+                <?php 
+                    $result = mysqli_query($connection, $querySelect) or die(mysqli_error($connection));
+                    $mdrow = mysqli_fetch_array($result)
+                ?>
+                <form method="post" action="">
+                    <div class="form-container">
+                        <h2>Modify/Delete person</h2>
+                        <input type="hidden" name="id" id="mdid" value="<?=$mdrow['id']?>" />
+                        <div class="form-field">
+                            <label for="mdname">Name:</label>
+                            <input required name="name" id="mdname" type="text" value="<?=$mdrow['name']?>" />
+                        </div>
+                        <div class="form-field">
+                            <label for="mdaddress">Address:</label>
+                            <input name="address" id="mdaddress" type="text" value="<?=$mdrow['address']?>" />
+                        </div>
+                        <div class="form-field">
+                            <label for="mdemail">Email:</label>
+                            <input name="email" id="mdemail" type="email" value="<?=$mdrow['email']?>"/>
+                        </div>
+                        <div class="form-field">
+                            <label for="mdcellphone">Cellphone:</label>
+                            <input name="cellphone" id="mdcellphone" type="text" value="<?=$mdrow['cellphone']?>"/>
+                        </div>
+                        <input class="form-submit" name="update" type="submit" value="Save" />
+                        <input class="form-submit" name="delete" type="submit" value="Delete" />
+                    </div>
+                </form>
+                <?php endif; ?>
             </div>
         </div>
 

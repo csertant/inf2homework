@@ -2,11 +2,6 @@
 include 'scalp_db.php';
 
 $connection = connectDatabase();
-
-$search = null;
-if (isset($_POST['search'])) {
-    $search = $_POST['search'];
-}
 ?>
 
 <!DOCTYPE html>
@@ -27,39 +22,45 @@ if (isset($_POST['search'])) {
 
             <div class="results">
                 <?php
-                    $peopleSearch = sprintf("SELECT id, name, address, email, workplace FROM People WHERE LOWER(name) LIKE '%%%s%%' ", mysqli_real_escape_string($connection, strtolower($search)));
+                    $search = null;
+                    if (isset($_POST['search'])) {
+                        $search = $_POST['search'];
+                    }
+                    $peopleSearch = sprintf("SELECT id, name, address, email, cellphone FROM People WHERE LOWER(name) LIKE '%%%s%%' ", mysqli_real_escape_string($connection, strtolower($search)));
                     $peopleResult = mysqli_query($connection, $peopleSearch) or die(mysqli_error($connection));
 
-                    $companySearch = sprintf("SELECT id, name, address, ceo FROM Company WHERE LOWER(name) LIKE '%%%s%%' ", mysqli_real_escape_string($connection, strtolower($search)));
+                    $companySearch = sprintf("SELECT id, name, address, category FROM Company WHERE LOWER(name) LIKE '%%%s%%' ", mysqli_real_escape_string($connection, strtolower($search)));
                     $companyResult = mysqli_query($connection, $companySearch) or die(mysqli_error($connection));
 
-                    $projectSearch = sprintf("SELECT id, name, description, projectLeader FROM Project WHERE LOWER(name) LIKE '%%%s%%' ", mysqli_real_escape_string($connection, strtolower($search)));
+                    $projectSearch = sprintf("SELECT id, name, description, startDate FROM Project WHERE LOWER(name) LIKE '%%%s%%' ", mysqli_real_escape_string($connection, strtolower($search)));
                     $projectResult = mysqli_query($connection, $projectSearch) or die(mysqli_error($connection));
                 ?>
 
                 <!-- People -->
-                <?php if (!($sg = mysqli_fetch_array($peopleResult))): ?>
-                    <div>There are no people like that in our database.</div>
-                <?php endif; ?>
+                <h2>People</h2>
                 <table>
                     <thead>
                         <tr>
                             <th>Name</th>
                             <th>Address</th>
                             <th>Email</th>
-                            <th>Workplace</th>
+                            <th>Cellphone</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
+                        <?php if (!mysqli_num_rows($peopleResult)): ?>
+                            <tr><td colspan="4">There are no people like that in our database.</td></tr>
+                        <?php endif; ?>
                         <?php while ($row = mysqli_fetch_array($peopleResult)): ?>
                             <tr>
                                 <td><?=$row['name']?></td>
                                 <td><?=$row['address']?></td>
                                 <td><?=$row['email']?></td>
-                                <td><?=$row['workplace']?></td>
+                                <td><?=$row['cellphone']?></td>
                                 <td>
-                                    <a class="" href="editPeople.php?personid=<?=$row['id']?>">
-                                        <i class=""></i>
+                                    <a class="" href="people.php?personid=<?=$row['id']?>">
+                                        <i class="material-icons">edit</i>
                                     </a>
                                 </td> 
                             </tr>
@@ -67,59 +68,64 @@ if (isset($_POST['search'])) {
                     </tbody>
                 </table>
                 <!-- Company -->
-                <?php if (!($sg = mysqli_fetch_array($companyResult))): ?>
-                    <div>There are no companies like that in our database.</div>
-                <?php endif; ?>
-                <table class="">
-                    <thead class="">
+                <h2>Startups</h2>
+                <table>
+                    <thead>
                         <tr>
                             <th>Name</th>
                             <th>Address</th>      
-                            <th>Ceo</th>      
+                            <th>Category</th>      
                             <th></th>
                         </tr> 
                     </thead>
                     <tbody>
-                    <?php while ($row = mysqli_fetch_array($companyResult)): ?>
-                        <tr>
-                            <td><?=$row['name']?></td>
-                            <td><?=$row['address']?></td>
-                            <td><?=$row['ceo']?></td>
-                            <td>
-                                <a class="" href="editCompany.php?companyid=<?=$row['id']?>">
-                                    <i class=""></i>
-                                </a>
-                            </td> 
-                        </tr>                
-                    <?php endwhile; ?> 
+                        <?php if (!mysqli_num_rows($companyResult)): ?>
+                            <tr><td colspan="4">There are no companies like that in our database.</td></tr>
+                        <?php endif; ?>
+                        <?php while ($row = mysqli_fetch_array($companyResult)): ?>
+                            <tr>
+                                <td><?=$row['name']?></td>
+                                <td><?=$row['address']?></td>
+                                <td><?=$row['category']?></td>
+                                <td>
+                                    <a class="" href="companies.php?companyid=<?=$row['id']?>">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                </td> 
+                            </tr>                
+                        <?php endwhile; ?> 
                     </tbody>
                 </table>
                 <!-- Project -->
-                <?php if (!($sg = mysqli_fetch_array($projectResult))): ?>
-                    <div>There are no projects like that in our database.</div>
-                <?php endif; ?>
-                <table class="">
-                    <thead class="">
+                <h2>Projects</h2>
+                <table>
+                    <thead>
                         <tr>
                             <th>Name</th>
                             <th>Description</th>      
-                            <th>Leader</th>      
+                            <th>Project started</th>      
                             <th></th>
                         </tr> 
                     </thead>
                     <tbody>
-                    <?php while ($row = mysqli_fetch_array($projectResult)): ?>
-                        <tr>
-                            <td><?=$row['name']?></td>
-                            <td><?=$row['description']?></td>
-                            <td><?=$row['projectLeader']?></td>
-                            <td>
-                                <a class="" href="editProject.php?projectid=<?=$row['id']?>">
-                                    <i class=""></i>
-                                </a>
-                            </td> 
-                        </tr>                
-                    <?php endwhile; ?> 
+                        <?php if (!mysqli_num_rows($projectResult)): ?>
+                            <tr><td colspan="4">There are no projects like that in our database.</td><tr>
+                        <?php endif; ?>
+                        <?php while ($row = mysqli_fetch_array($projectResult)): ?>
+                            <tr>
+                                <td><?=$row['name']?></td>
+                                <td><?=$row['description']?></td>
+                                <td><?=$row['startDate']?></td>
+                                <td>
+                                    <a class="" href="projects.php?projectid=<?=$row['id']?>">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                    <a href="details.php?projectid=<?=$row['id']?>">
+                                        <i class="material-icons">info</i>
+                                    </a>
+                                </td> 
+                            </tr>                
+                        <?php endwhile; ?> 
                     </tbody>
                 </table>
             </div>
