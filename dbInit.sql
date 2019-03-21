@@ -14,8 +14,7 @@ CREATE TABLE IF NOT EXISTS `scalp`.`People` (
   `address` NVARCHAR(100) NOT NULL,
   `email` VARCHAR(30) NOT NULL,
   `cellphone` VARCHAR(12) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+  PRIMARY KEY (`id`));
 
 -- Table `scalp`.`Company`
 -- -----------------------------------------------------
@@ -26,8 +25,7 @@ CREATE TABLE IF NOT EXISTS `scalp`.`Company` (
   `name` NVARCHAR(50) NOT NULL,
   `address` NVARCHAR(100) NOT NULL,
   `category` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+  PRIMARY KEY (`id`));
 
 -- Table `scalp`.`Project`
 -- -----------------------------------------------------
@@ -38,8 +36,7 @@ CREATE TABLE IF NOT EXISTS `scalp`.`Project` (
   `name` NVARCHAR(45) NOT NULL,
   `description` NVARCHAR(1000) NULL,
   `startDate` DATETIME NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+  PRIMARY KEY (`id`));
 
 -- Table `scalp`.`CompaniesProjects`
 -- -----------------------------------------------------
@@ -60,8 +57,7 @@ CREATE TABLE IF NOT EXISTS `scalp`.`CompaniesProjects` (
     FOREIGN KEY (`Project_id`)
     REFERENCES `scalp`.`Project` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION);
 
 -- Table `scalp`.`ProjectsContributors`
 -- -----------------------------------------------------
@@ -82,5 +78,16 @@ CREATE TABLE IF NOT EXISTS `scalp`.`ProjectsContributors` (
     FOREIGN KEY (`People_id`)
     REFERENCES `scalp`.`People` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION);
+
+-- Insert Data
+
+INSERT INTO People('name', 'address', 'email', 'cellphone') VALUES ('High Higgins', '113. 9th Avenue, Washington D.C. USA', 'higgs@bozon.com', '+132238556');
+INSERT INTO People('name', 'address', 'email', 'cellphone') VALUES ('Larry Low', '98. Meet Str., Neptun City, Colorado', 'larry@page.google', '911911');
+INSERT INTO People('name', 'address', 'email', 'cellphone') VALUES ('Louis the XIV.', 'Place dArmes, 78000 Versailles, France', 'i@royal.fr', 'onlyletters');
+
+INSERT INTO Company('name', 'address', 'category') VALUES ('Scalp Ltd.', '13. Egyetem utca, Budapest, Hungary', 'Online Services');
+INSERT INTO Company('name', 'address', 'category') VALUES ('XIVTours', '78000 Versailles, France', 'Tourism and Catering');
+
+INSERT INTO Project('name', 'description', 'startDate') VALUES ('Scalp Management System', 'Managing ones startup projects.', '2019-03-18');
+INSERT INTO Project('name', 'description', 'startDate') VALUES ('Royal Tax System', 'Encashing tourist tax effectively.', '1643-05-14');

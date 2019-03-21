@@ -105,8 +105,8 @@ else if(isset($_POST['delete'])) {
 
                 <!-- Create New -->
                 <?php if(!isset($_GET['personid'])): ?>
-                <form method="post" action="">
-                    <div class="form-container">
+                <div class="form-container">
+                    <form method="post" action="">
                         <h2>New person</h2>
                             <div class="form-field">
                                 <label for="name">Name:</label>
@@ -125,8 +125,8 @@ else if(isset($_POST['delete'])) {
                                 <input required class="form-control" name="cellphone" id="cellphone" type="text"  />
                             </div>
                             <input class="form-submit" name="new" type="submit" value="Create" />
-                    </div>
-                </form>
+                    </form>
+                </div>
                 <?php endif; ?>
 
                 <!-- Modify, Delete -->
@@ -135,8 +135,8 @@ else if(isset($_POST['delete'])) {
                     $result = mysqli_query($connection, $querySelect) or die(mysqli_error($connection));
                     $mdrow = mysqli_fetch_array($result)
                 ?>
-                <form method="post" action="">
-                    <div class="form-container">
+                <div class="form-container">
+                    <form method="post" action="">
                         <h2>Modify/Delete person</h2>
                         <input type="hidden" name="id" id="mdid" value="<?=$mdrow['id']?>" />
                         <div class="form-field">
@@ -157,8 +157,8 @@ else if(isset($_POST['delete'])) {
                         </div>
                         <input class="form-submit" name="update" type="submit" value="Save" />
                         <input class="form-submit" name="delete" type="submit" value="Delete" />
-                    </div>
-                </form>
+                    </form>
+                </div>
                 <?php endif; ?>
             </div>
         </div>

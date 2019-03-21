@@ -96,6 +96,15 @@ h2 {
     width: 90%;
     margin: 1rem auto;
 }
+.twocolumns {
+    width: 95%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto;
+    justify-content: center;
+    align-content: center;
+}
 
 /*----People, Companies, Projects----*/
 .people-content, .companies-content, .projects-content, .project-details-content, .about-content {
@@ -133,27 +142,31 @@ tr:nth-child(even) {
 }
 
 /*----Forms----*/
-form {
-    width: 90%;
-    margin: 0 auto;
-}
+
 .form-container {
-    margin: 1rem 0;
+    width: 90%;
+    margin: 1rem auto;
 }
 .form-field {
     height: 2rem;
     font-size: 1.2rem;
     padding: 0.3rem 0;
 }
-input[type=text], input[type=email] {
+input[type=text], input[type=email], input[type=date] {
     border: none;
     border-bottom: 1px solid #303841;
     font-size: 1.2rem;
     font-family: 'Roboto Mono', monospace;
     padding: 0.2rem;
 }
-input[type=text]:hover, input[type=email]:hover {
+input[type=text]:hover, input[type=email]:hover, input[type=date] {
     background-color: #f3f3f3;
+}
+select {
+    border: 1px solid #303841;
+    font-size: 1.2rem;
+    font-family: 'Roboto Mono', monospace;
+    padding: 0.2rem;
 }
 .form-submit {
     background-color: #172c44;
@@ -209,4 +222,13 @@ a:active {
     text-decoration: none;
     color: black;
     background-color: transparent;
+}
+
+/*----About----*/
+.about-text {
+    text-align: center;
+    margin: 3rem 0;
+}
+.about-text p {
+    margin: 1rem 0;
 }

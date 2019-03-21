@@ -14,7 +14,11 @@
             <header class="title">
                 <h1>About us</h1>
             </header>
-            <p>Icons from <a href="https://material.io/tools/icons">Google</a>.</p>
+            <div class="about-text">
+                <p>Budapest University of Technology and Economics - Informatics 2 - Homework</p>
+                <p>Webapp using PHP, MySQL, HTML, CSS (and a little bit of Javascript) technologies.</p>
+                <p>Thanks: Icons from <a href="https://material.io/tools/icons">Google</a>.</p>
+            </div>
         </div>
 
         <?php include 'footer.html'; ?>
