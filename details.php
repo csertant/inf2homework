@@ -3,6 +3,11 @@ include 'scalp_db.php';
 
 $connection = connectDatabase();
 
+$assignedCompany = false;
+$deletedCompany = false;
+$assignedPeople = false;
+$deletedPeople = false;
+
 if(isset($_POST['newCompany'])){
     $projectId = mysqli_real_escape_string($connection, $_POST['projectId']);
     $companyId = mysqli_real_escape_string($connection, $_POST['companyId']);
@@ -11,6 +16,7 @@ if(isset($_POST['newCompany'])){
         $projectId
     );
     mysqli_query($connection, $createQuery) or die(mysqli_error($connection));
+    $assignedCompany = true;
 }
 else if(isset($_POST['deleteCompany'])) {
     $companyId = mysqli_real_escape_string($connection, $_POST['companyId']);
@@ -20,6 +26,7 @@ else if(isset($_POST['deleteCompany'])) {
         $projectId
     );
     mysqli_query($connection, $deleteQuery) or die(mysqli_error($connection));
+    $deletedCompany = true;
 }
 else if(isset($_POST['newPeople'])){
     $peopleId = mysqli_real_escape_string($connection, $_POST['peopleId']);
@@ -29,6 +36,7 @@ else if(isset($_POST['newPeople'])){
         $peopleId
     );
     mysqli_query($connection, $createQuery) or die(mysqli_error($connection));
+    $assignedPeople = true;
 }
 else if(isset($_POST['deletePeople'])) {
     $peopleId = mysqli_real_escape_string($connection, $_POST['peopleId']);
@@ -38,6 +46,7 @@ else if(isset($_POST['deletePeople'])) {
         $peopleId
     );
     mysqli_query($connection, $deleteQuery) or die(mysqli_error($connection));
+    $deletedPeople = true;
 }
 ?>
 
@@ -56,6 +65,12 @@ else if(isset($_POST['deletePeople'])) {
             <header class="title">
                 <h1>Project details</h1>
             </header>
+            <div class="message-box">
+                <?php if($assignedCompany):?><div class="new-box">Startup assigned to the project.</div><?php endif; ?>
+                <?php if($deletedCompany):?><div class="deleted-box">Startup removed from the project.</div><?php endif; ?>
+                <?php if($assignedPeople):?><div class="new-box">Contributor assigned to the project.</div><?php endif; ?>
+                <?php if($deletedPeople):?><div class="deleted-box">Contributor removed from the project.</div><?php endif; ?>
+            </div>
                 <?php
                     $querySelect = sprintf("SELECT id, name, description, startDate FROM Project WHERE id='%s'",
                     mysqli_real_escape_string($connection, $_GET['projectid']));
@@ -104,7 +119,7 @@ else if(isset($_POST['deletePeople'])) {
                             <span>This project has no companies added.</span>
                         <?php else:
                             while($rowC = mysqli_fetch_array($resultCompany)): ?>
-                            <span><?=$rowC['name']?><a title="You can add/delete a Startup from the project by using the forms below." href="javascript:alert('You can add/delete a Startup from the project by using the forms below.');">
+                            <span><?=$rowC['name']?><a title="You can add/delete a Startup to/from the project by using the forms below." href="javascript:alert('You can add/delete a Startup from the project by using the forms below.');">
                             <i class="material-icons">edit</i></a>,</span>
                         <?php endwhile; ?>
                          run(s) this project.</td>
@@ -116,7 +131,7 @@ else if(isset($_POST['deletePeople'])) {
                             <span>This project has no contributors added.</span>
                         <?php else:
                             while($rowP = mysqli_fetch_array($resultPeople)): ?>
-                            <span><?=$rowP['name']?><a title="You can add/delete People from the project by using the forms below." href="javascript:alert('You can add/delete People from the project by using the forms below.');">
+                            <span><?=$rowP['name']?><a title="You can add/delete People to/from the project by using the forms below." href="javascript:alert('You can add/delete People from the project by using the forms below.');">
                             <i class="material-icons">edit</i></a>,</span>
                         <?php endwhile; endif; ?>
                         </td>

@@ -58,6 +58,11 @@ else if(isset($_POST['delete'])) {
             <header class="title">
                 <h1>Startups</h1>
             </header>
+            <div class="message-box">
+                <?php if($addedNewCompany):?><div class="new-box">New startup created.</div><?php endif; ?>
+                <?php if($updatedCompany):?><div class="modified-box">Startup modified.</div><?php endif; ?>
+                <?php if($deletedCompany):?><div class="deleted-box">Startup removed from database.</div><?php endif; ?>
+            </div>
             <div>
                 <?php
                     if(isset($_GET['companyid'])) {

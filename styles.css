@@ -68,6 +68,26 @@ font-family: 'Roboto Mono', monospace;
     background-size: contain;
 }
 
+/*----Message Boxes----*/
+.message-box {
+    text-align: center;
+    width: 90%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 1rem 0;
+}
+.new-box {
+    background-color: rgb(19, 99, 19);
+    color: white;
+}
+.modified-box {
+    background-color: rgb(255, 184, 52);
+}
+.deleted-box {
+    background-color: rgb(255, 60, 60);
+}
+
 /*----Main Content----*/
 .main-content {
     width: 100%;

@@ -62,6 +62,11 @@ else if(isset($_POST['delete'])) {
             <header class="title">
                 <h1>People</h1>
             </header>
+            <div class="message-box">
+                <?php if($addedNewPerson):?><div class="new-box">New person added.</div><?php endif; ?>
+                <?php if($updatedPerson):?><div class="modified-box">The data of the person modified.</div><?php endif; ?>
+                <?php if($deletedPerson):?><div class="deleted-box">Person removed from database.</div><?php endif; ?>
+            </div>
             <div>
                 <?php
                     if(isset($_GET['personid'])){

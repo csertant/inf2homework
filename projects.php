@@ -61,6 +61,11 @@ else if(isset($_POST['delete'])) {
             <header class="title">
                 <h1>Projects</h1>
             </header>
+            <div class="message-box">
+                <?php if($addedNewProject):?><div class="new-box">New project added.</div><?php endif; ?>
+                <?php if($updatedProject):?><div class="modified-box">Project modified.</div><?php endif; ?>
+                <?php if($deletedProject):?><div class="deleted-box">Project removed from database.</div><?php endif; ?>
+            </div>
             <div>
                 <?php
                     if(isset($_GET['projectid'])) {
